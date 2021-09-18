@@ -5,3 +5,11 @@ target
 out
 
 /.idea/*
+.ini
+.git
+.classpath
+*.settings
+.factorypath
+/.project
+/desktop.ini
+
