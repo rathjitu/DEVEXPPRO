@@ -2,7 +2,6 @@ package com.devexperts.model.service;
 
 import com.devexperts.model.account.Account;
 
-import lombok.NonNull;
 
 public interface AccountService {
 	public void clear();

@@ -18,7 +18,9 @@ public class AccountServiceImpl implements AccountService {
     private final List<Account> accounts = new ArrayList<>();*/
 	private  List<Account> accounts = new ArrayList<>();
 
-    @Override
+
+
+	@Override
     public void clear() {
     	/*Clear is faster when list is very short 
     	The new ArrayList will start with a small array, and Calling
@@ -36,8 +38,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccount(long id) {
         //return accounts.stream()
-    	return accounts.stream().parallel()
-    	           .filter(account -> account.getAccountKey() == AccountKey.valueOf(String.valueOf(id)))
+	    	return accounts.stream().parallel()
+	    	           .filter(account -> account.getAccountKey() == AccountKey.getType(id))
     	                .findAny()
     	              .orElse(null);
     }
