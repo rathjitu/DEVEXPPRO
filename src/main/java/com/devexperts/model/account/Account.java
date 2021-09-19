@@ -2,32 +2,69 @@
  * 
  */
 package com.devexperts.model.account;
-
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 
 /**
  * @author jitrath
  *
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@JsonPropertyOrder({"accountId", "accountType","balance"})
+@JsonDeserialize(contentAs= Account.class)
 public class Account {
-
-	private AccountKey accountKey;
-	
-
+	private Long accountId;
+	private AccountType accountType;
 	private BigDecimal balance;
-	 
-	// Account constructor that receives two parameters
-	 public Account(AccountKey accountKey, BigDecimal balance)
-	{
-		this.accountKey = accountKey; 
-
-		if (balance.compareTo(BigDecimal.valueOf(0.0))<1) {// if the balance is valid
-			this.balance = BigDecimal.valueOf(0.0); 
-		}else{
-			this.balance=balance;
-		}
+	
+	public Account() {
+		
 	}
- 
+	
+	public Account(Long accountId, AccountType accountType, BigDecimal balance) {
+        this.accountId = accountId;
+        this.accountType = accountType;
+        this.balance = balance;
+    }
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+
+	public AccountType getAccountType() {
+		return accountType;
+	}
+
+
+	public void setAccountType(AccountType accountType) {
+		this.accountType = accountType;
+	}
+
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
+	}
+
+	
+	
     public boolean withdraw(BigDecimal withdrawAmount) {
     	if (withdrawAmount.compareTo(balance)<1) { 
     		balance = balance.subtract(withdrawAmount); 
@@ -45,17 +82,17 @@ public class Account {
     		return false;
     	}
     }
- 
-    public BigDecimal getBalance() {
-        return this.balance;
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Account))
+            return false;
+        Account other = (Account)o;
+        boolean accountCodeEquals = (this.accountId == null && other.accountType == null)
+          || (this.balance != null && this.accountId.equals(other.accountId)&& this.balance.equals(other.balance));
+        return this.accountId == other.accountId && this.balance == other.balance;
     }
 
-	public AccountKey getAccountKey() {
-		return accountKey;
-	}
-
-	public void setAccountKey(AccountKey accountKey) {
-		this.accountKey = accountKey;
-	}
 
 }
