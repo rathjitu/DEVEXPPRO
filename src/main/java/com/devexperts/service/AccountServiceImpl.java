@@ -1,6 +1,7 @@
 package com.devexperts.service;
 
 
+import com.devexperts.exceptions.InSufficientFundException;
 import com.devexperts.model.account.Account;
 import com.devexperts.model.account.AccountKey;
 import com.devexperts.model.service.AccountService;
@@ -9,6 +10,7 @@ import lombok.NonNull;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +47,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void transfer(Account source, Account target, double amount) {
-        //do nothing for now
-    }
+	public boolean transfer(Account source, Account target, BigDecimal amount) {
+		if ((source.getBalance().compareTo(BigDecimal.valueOf(0.0))==0)||(source.getBalance().compareTo(source.getBalance())>1)) {
+			throw new InSufficientFundException("Current balance  is less than requested amount");
+		}
+		boolean success=source.withdraw(amount);
+		if(success) {
+			target.deposit(amount);
+			return true;
+		}
+		return false;
+	}
+    
+
 
 }

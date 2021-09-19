@@ -3,6 +3,8 @@
  */
 package com.devexperts.model.account;
 
+import java.math.BigDecimal;
+
 /**
  * @author jitrath
  *
@@ -12,30 +14,39 @@ public class Account {
 	private AccountKey accountKey;
 	
 
-	private double balance;
+	private BigDecimal balance;
 	 
 	// Account constructor that receives two parameters
-	 public Account(AccountKey accountKey, double balance)
+	 public Account(AccountKey accountKey, BigDecimal balance)
 	{
 		this.accountKey = accountKey; 
 
-		if (balance > 0.0) // if the balance is valid
-			this.balance = balance; // assign it to instance variable balance
+		if (balance.compareTo(BigDecimal.valueOf(0.0))<1) {// if the balance is valid
+			this.balance = BigDecimal.valueOf(0.0); 
+		}else{
+			this.balance=balance;
+		}
 	}
  
-    public void withdraw(double withdrawAmount) {
-    	if (withdrawAmount < balance) { 
-    		this.balance -= withdrawAmount;
+    public boolean withdraw(BigDecimal withdrawAmount) {
+    	if (withdrawAmount.compareTo(balance)<1) { 
+    		balance = balance.subtract(withdrawAmount); 
+    		return true;
+    	}else {
+    		return false;
     	}
     }
  
-    public void deposit(double depositAmount) {
-    	if (depositAmount > 0.0) { // if the depositAmount is valid     
-    		balance = balance + depositAmount; 
+    public boolean deposit(BigDecimal depositAmount) {
+    	if (depositAmount.compareTo(BigDecimal.valueOf(0.0))==1) { // if the depositAmount is valid     
+    		balance = balance.add(depositAmount); 
+    		return true;
+    	}else {
+    		return false;
     	}
     }
  
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return this.balance;
     }
 
