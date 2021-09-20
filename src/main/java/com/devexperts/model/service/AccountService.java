@@ -9,8 +9,9 @@ import com.devexperts.model.account.MoneyTransaction;
 
 public interface AccountService {
 	public void clear();
-	public List<Account> createAccount(Account account) ;
+	public void createAccount(Account account) ;
 	public Account getAccount(long id) ;
-	Boolean transfer(MoneyTransaction moneyTransaction);
+	Account transfer(MoneyTransaction moneyTransaction);
+	public List<Account> getAccounts() ;
 }
 
